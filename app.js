@@ -37,7 +37,6 @@ mongoose.connect(mongoDBURL, {useNewUrlParser: true, useUnifiedTopology: true}).
     console.log(error);
 });
 
-
 app.listen(port, () => {
     console.log('\nListening at port ' + port);
 })

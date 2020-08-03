@@ -3,12 +3,12 @@
 const {URL, validateUrl} = require('../models/urls');
 const {nanoid} = require('nanoid');
 
-const UrlService = function(){
+const urlService = function(){
     this.generateNewShortUrl = (url) => {
         return new Promise((resolve, reject) => {
             const {error} = validateUrl(url); //Validate url data
             if (error) {
-                reject({status: 500, message: 'Url validation error\n ' + error.details[0]});
+                reject({status: 500, message: error.message});
             }else{
                 if(!url.slug){
                     url.slug = nanoid();
@@ -20,7 +20,11 @@ const UrlService = function(){
                     url: url.url
                 });
                 newUrl.save().then(() => {
-                    resolve({status: 200, message: 'New url added', data: newUrl});
+                    const result = {
+                        slug: newUrl.slug,
+                        url: newUrl.url
+                    }
+                    resolve({status: 200, message: 'New url added', data: result});
                 }).catch(error => {
                     reject({status: 500, message: 'Database operation error\n' + error});
                 });            
@@ -29,4 +33,4 @@ const UrlService = function(){
     }
 }
 
-module.exports = new UrlService();
+module.exports = new urlService();
