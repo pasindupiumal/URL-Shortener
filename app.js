@@ -15,8 +15,20 @@ app.use(helmet());
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
+app.use((error, req, res, next) => {
+    if(error.status){
+        res.status(error.status);
+    }else{
+        res.status(500);
+    }
+    res.json({
+        message: error.message,
+        stack: process.env.NODE_ENV === 'production' ?  'Hello, World' : error.stack
+    });
+});
 
 mongoose.connect(mongoDBURL, {useNewUrlParser: true, useUnifiedTopology: true}).then(() => {
     console.log('\nConnected to mongo database');
@@ -24,6 +36,7 @@ mongoose.connect(mongoDBURL, {useNewUrlParser: true, useUnifiedTopology: true}).
     console.log('\nError connecting to database');
     console.log(error);
 });
+
 
 app.listen(port, () => {
     console.log('\nListening at port ' + port);
