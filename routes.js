@@ -2,9 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const viewController = require('./controllers/viewController');
+const urlController = require('./controllers/urlController');
 
-router.use('/', viewController);
-
+router.use('/urls', urlController);
 
 module.exports = router;

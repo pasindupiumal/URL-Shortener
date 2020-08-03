@@ -3,9 +3,10 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
+//Generate new shorter url
+router.post('/', (req, res) => {
 
-    res.send('View Controller');
+    res.send('URL controller');
 });
 
 module.exports = router;
